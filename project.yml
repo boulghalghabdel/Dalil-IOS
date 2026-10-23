@@ -1,0 +1,35 @@
+# Projet Xcode décrit en texte : sur le Mac, `xcodegen generate` crée Dalil.xcodeproj.
+name: Dalil
+options:
+  bundleIdPrefix: com.dalil
+  deploymentTarget:
+    iOS: "16.0"
+  developmentLanguage: ar
+settings:
+  base:
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+targets:
+  Dalil:
+    type: application
+    platform: iOS
+    sources:
+      - path: Dalil
+      # Dossier copié tel quel dans l'app : Bundle.main.url(..., subdirectory: "Chapters")
+      - path: Chapters
+        type: folder
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.dalil.alkhayrat
+        PRODUCT_NAME: Dalil
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: "دلائل الخيرات"
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_STYLE: Automatic
