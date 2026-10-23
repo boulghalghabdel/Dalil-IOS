@@ -1,5 +1,7 @@
-# Compile l'app sur un Mac de GitHub (sans signature), pour vérifier que le code compile
-# sans avoir de Mac soi-même. Se lance à chaque envoi sur GitHub, ou à la main (onglet Actions).
+# Compile l'app sur un Mac de GitHub, sans avoir de Mac soi-même.
+# Se lance à chaque envoi sur GitHub, ou à la main (onglet Actions).
+# Résultat : Dalil.ipa (non signé), à télécharger en bas de la page du build,
+# puis à installer sur l'iPhone avec Sideloadly depuis Windows (voir LISEZMOI.md).
 name: Build iOS
 
 on:
@@ -20,3 +22,16 @@ jobs:
           xcodebuild -project Dalil.xcodeproj -scheme Dalil \
             -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
             CODE_SIGNING_ALLOWED=NO build
+      - name: Compiler pour iPhone (sans signature)
+        run: |
+          xcodebuild -project Dalil.xcodeproj -scheme Dalil -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
+          mkdir -p Payload
+          cp -R build/Build/Products/Release-iphoneos/Dalil.app Payload/
+          zip -qry Dalil.ipa Payload
+      - name: Mettre Dalil.ipa à télécharger
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dalil-ipa
+          path: Dalil.ipa
