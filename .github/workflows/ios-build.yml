@@ -1,0 +1,22 @@
+# Compile l'app sur un Mac de GitHub (sans signature), pour vérifier que le code compile
+# sans avoir de Mac soi-même. Se lance à chaque envoi sur GitHub, ou à la main (onglet Actions).
+name: Build iOS
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Générer le projet Xcode
+        run: |
+          brew install xcodegen
+          xcodegen generate
+      - name: Compiler pour le simulateur
+        run: |
+          xcodebuild -project Dalil.xcodeproj -scheme Dalil \
+            -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO build
